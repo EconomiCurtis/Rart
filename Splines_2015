@@ -1,0 +1,47 @@
+seed <- 20170930
+set.seed(seed)
+png(paste0("/Users/gregorymatthews/Dropbox/Rart/Final/Images/splinesNO4_",seed,".png"), w = 19, h = 13, units = "in", res = 300)
+
+#Create the blank plot
+plot(0, 0, frame.plot = F, xlim = c(-19,19), ylim = c(2,28), asp = 1, col = "white", xaxt = 'n', 
+      yaxt = 'n', xlab = "", ylab = "")
+
+#parameters
+lwd <- 7.5
+points(c(-19,19), c(0,0), type = "l", lwd = lwd)
+numPoints <- 20
+lwr <- 0.25
+upr <- 0.75
+
+
+u <- runif(numPoints, lwr ,upr)
+x <- seq(-19, 19, length = numPoints)
+a <- spline(x, u, n = 1000)
+points(a$x, a$y, type = "l", lwd = lwd)
+
+#Add random noise to the points then smooth with a spline
+for (i in 1:200){
+  #print(i)
+  u <- u + runif(numPoints, lwr, upr)
+  x <- seq(-19, 19, length = numPoints)
+  a <- spline(x, u, n = 1000)
+  points(a$x, a$y, type = "l", lwd = lwd)
+}
+
+# #If you want to start at the top and work down
+# u <- -runif(numPoints, lwr, upr)
+# x <- seq(-19, 19, length = numPoints)
+# a <- spline(x, u, n = 1000)
+# points(a$x, a$y, type = "l", lwd = lwd)
+# 
+# for (i in 1:200){
+#   print(i)
+#   u <- u - runif(numPoints, lwr, upr)
+#   x <- seq(-19, 19, length = numPoints)
+#   a <- spline(x, u, n = 1000)
+#   points(a$x, a$y, type = "l", lwd = lwd)
+#   #points(seq(0,19,length=numPoints),u,lwd=3,col="red",pch=16)
+# }
+
+
+dev.off()
